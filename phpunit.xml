@@ -12,7 +12,7 @@
          syntaxCheck="true"
 >
     <testsuites>
-        <testsuite name="Infoexam Password">
+        <testsuite name="Infoexam Media">
             <directory>./tests</directory>
         </testsuite>
     </testsuites>
