@@ -2,12 +2,10 @@
 
 namespace Infoexam\Media;
 
-use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
-use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-abstract class Media extends Model implements HasMediaConversions
+trait Media
 {
     use HasMediaTrait;
 
