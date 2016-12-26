@@ -14,7 +14,7 @@ class MediaServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app->register(MediaLibraryServiceProvider::class);
+        //
     }
 
     /**
@@ -24,6 +24,6 @@ class MediaServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->register(MediaLibraryServiceProvider::class);
     }
 }
