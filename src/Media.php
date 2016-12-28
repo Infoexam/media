@@ -16,7 +16,8 @@ trait Media
      *
      * @return void
      */
-    public function registerMediaConversions($width = 368) {
+    public function registerMediaConversions($width = 368)
+    {
         $this->addMediaConversion('thumb')
             ->setManipulations(['w' => $width])
             ->performOnCollections('*')
@@ -36,7 +37,7 @@ trait Media
         $files = $files instanceof UploadedFile ? [$files] : $files;
 
         foreach ($files as $file) {
-            $filename =  sprintf('origin.%s', $file->guessExtension() ?? 'jpeg');
+            $filename = sprintf('origin.%s', $file->guessExtension() ?? 'jpeg');
 
             $media[] = $this->addMedia($file)
                 ->setFileName($filename)
