@@ -37,7 +37,7 @@ trait Media
         $files = $files instanceof UploadedFile ? [$files] : $files;
 
         foreach ($files as $file) {
-            $filename = sprintf('origin.%s', $file->guessExtension() ?? 'jpeg');
+            $filename = sprintf('origin.%s', $file->guessExtension() ?? $file->getClientOriginalExtension());
 
             $media[] = $this->addMedia($file)
                 ->setFileName($filename)
