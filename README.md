@@ -1,3 +1,7 @@
 # Infoexam Media
 
-[![StyleCI](https://styleci.io/repos/77218057/shield)](https://styleci.io/repos/77218057)
+CCU Infoexam Media Package
+
+## Version
+
+1.0.0
