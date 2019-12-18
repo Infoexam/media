@@ -8,16 +8,6 @@ use Spatie\MediaLibrary\MediaLibraryServiceProvider;
 class MediaServiceProvider extends ServiceProvider
 {
     /**
-     * Bootstrap the application events.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        //
-    }
-
-    /**
      * Register the service provider.
      *
      * @return void
