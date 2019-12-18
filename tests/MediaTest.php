@@ -1,5 +1,10 @@
 <?php
 
+use Illuminate\Foundation\Application;
+use Illuminate\Http\UploadedFile;
+use Infoexam\Media\Generators\Path;
+use Infoexam\Media\Generators\Url;
+
 class MediaTest extends Orchestra\Testbench\TestCase
 {
     /**
@@ -7,37 +12,21 @@ class MediaTest extends Orchestra\Testbench\TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
-        $this->loadMigrationsFrom([
-            '--realpath' => realpath(__DIR__.'/migrations'),
-        ]);
-    }
-
-    /**
-     * Clean up the testing environment before the next test.
-     *
-     * @return void
-     */
-    protected function tearDown()
-    {
-        parent::tearDown();
-
-        $filesystem = new \Illuminate\Filesystem\Filesystem;
-
-        $filesystem->cleanDirectory(__DIR__.'/uploads');
+        $this->loadMigrationsFrom(__DIR__ . '/migrations');
     }
 
     /**
      * Get package providers.
      *
-     * @param \Illuminate\Foundation\Application $app
+     * @param Application $app
      *
      * @return array
      */
-    protected function getPackageProviders($app)
+    protected function getPackageProviders($app): array
     {
         return [
             Infoexam\Media\MediaServiceProvider::class,
@@ -47,49 +36,48 @@ class MediaTest extends Orchestra\Testbench\TestCase
     /**
      * Define environment setup.
      *
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param Application $app
      *
      * @return void
      */
-    protected function getEnvironmentSetUp($app)
+    protected function getEnvironmentSetUp($app): void
     {
-        $app['config']->set('filesystems.disks.media', [
-            'driver' => 'local',
-            'root'   => __DIR__.'/uploads',
-        ]);
+        $app['config']->set('filesystems.disks.public.root', __DIR__ . '/uploads');
 
         $app['config']->set('database.default', 'testing');
-        $app['config']->set('database.connections.testing', [
-            'driver'   => 'sqlite',
-            'database' => ':memory:',
-            'prefix'   => '',
-        ]);
 
-        $app['config']->set('laravel-medialibrary.custom_url_generator_class', \Infoexam\Media\Generators\Url::class);
-        $app['config']->set('laravel-medialibrary.custom_path_generator_class', \Infoexam\Media\Generators\Path::class);
+        $app['config']->set('medialibrary.url_generator', Url::class);
+
+        $app['config']->set('medialibrary.path_generator', Path::class);
     }
 
     public function test_media()
     {
-        $prefix = __DIR__.'/medias/';
+        $prefix = __DIR__ . '/medias/';
 
-        copy($prefix.'earth.jpeg', $prefix.'test1.jpeg');
-        copy($prefix.'earth.jpeg', $prefix.'test2.jpeg');
+        copy($prefix . 'earth.jpeg', $prefix . 'test1.jpeg');
+        copy($prefix . 'earth.jpeg', $prefix . 'test2.jpeg');
 
-        $image = Image::create()->uploadMedias([$this->uploadFile('test1'), $this->uploadFile('test2')]);
+        $image = Image::create()->uploadMedias([
+            $this->uploadFile('test1'),
+            $this->uploadFile('test2'),
+        ]);
 
         $this->assertCount(2, $image->getMedia());
 
         $media = $image->getFirstMedia();
 
-        $this->assertContains('uploads', $media->getUrl());
-        $this->assertContains('origin.jpeg', $media->getUrl());
-        $this->assertContains('thumb.jpg', $media->getUrl('thumb'));
+        $this->assertStringContainsString('uploads', $media->getUrl());
+
+        $this->assertStringContainsString('origin.jpeg', $media->getUrl());
+
+        $this->assertStringContainsString('thumb.jpg', $media->getUrl('thumb'));
 
         $this->assertStringEndsWith('origin.jpeg', $media->getPath());
+
         $this->assertStringEndsWith('thumb.jpg', $media->getPath('thumb'));
 
-        $this->assertFileNotExists(__DIR__.'/medias/test.jpeg');
+        $this->assertFileNotExists(__DIR__ . '/medias/test.jpeg');
     }
 
     /**
@@ -97,15 +85,14 @@ class MediaTest extends Orchestra\Testbench\TestCase
      *
      * @param string $filename
      *
-     * @return \Symfony\Component\HttpFoundation\File\UploadedFile
+     * @return UploadedFile
      */
-    protected function uploadFile($filename)
+    protected function uploadFile($filename): UploadedFile
     {
-        return new \Symfony\Component\HttpFoundation\File\UploadedFile(
-            __DIR__.'/medias/'.$filename.'.jpeg',
+        return new UploadedFile(
+            __DIR__ . '/medias/' . $filename . '.jpeg',
             'earth',
             'image/jpeg',
-            393781,
             null,
             true
         );
