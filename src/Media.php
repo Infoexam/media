@@ -3,8 +3,10 @@
 namespace Infoexam\Media;
 
 use Illuminate\Http\UploadedFile;
+use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\MediaLibrary\Exceptions\FileCannotBeAdded;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\Models\Media as BaseMedia;
 
 trait Media
 {
@@ -13,15 +15,16 @@ trait Media
     /**
      * Register the conversions that should be performed.
      *
-     * @param int $width
+     * @param BaseMedia|null $media
      *
      * @return void
+     *
+     * @throws InvalidManipulation
      */
-    public function registerMediaConversions($width = 368)
+    public function registerMediaConversions(BaseMedia $media = null): void
     {
         $this->addMediaConversion('thumb')
-            ->setManipulations(['w' => $width])
-            ->performOnCollections('*')
+            ->width(368)
             ->nonQueued();
     }
 
@@ -39,12 +42,17 @@ trait Media
     {
         $files = $files instanceof UploadedFile ? [$files] : $files;
 
+        /** @var UploadedFile $file */
+
         foreach ($files as $file) {
-            $filename = sprintf('origin.%s', $file->guessExtension() ?? $file->getClientOriginalExtension());
+            $filename = sprintf(
+                'origin.%s',
+                $file->guessExtension()
+            );
 
             $media[] = $this->addMedia($file)
                 ->setFileName($filename)
-                ->toMediaLibrary($collection);
+                ->toMediaCollection($collection);
         }
 
         return $this;
