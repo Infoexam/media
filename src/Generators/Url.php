@@ -22,7 +22,7 @@ class Url extends BaseUrlGenerator implements UrlGenerator
      *
      * @return string
      */
-    public function getUrl() : string
+    public function getUrl(): string
     {
         return sprintf('%s/%s', $this->prefix(), $this->getPathRelativeToRoot());
     }

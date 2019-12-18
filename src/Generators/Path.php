@@ -15,7 +15,7 @@ class Path implements PathGenerator
      *
      * @return string
      */
-    public function getPath(Media $media) : string
+    public function getPath(Media $media): string
     {
         return sprintf('%s/%s/', $this->getPrefix($media), $this->getIdentity($media));
     }
@@ -27,7 +27,7 @@ class Path implements PathGenerator
      *
      * @return string
      */
-    public function getPathForConversions(Media $media) : string
+    public function getPathForConversions(Media $media): string
     {
         return $this->getPath($media);
     }
