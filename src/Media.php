@@ -2,8 +2,9 @@
 
 namespace Infoexam\Media;
 
+use Illuminate\Http\UploadedFile;
+use Spatie\MediaLibrary\Exceptions\FileCannotBeAdded;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 trait Media
 {
@@ -31,6 +32,8 @@ trait Media
      * @param string $collection
      *
      * @return static
+     *
+     * @throws FileCannotBeAdded
      */
     public function uploadMedias($files, $collection = 'default')
     {
