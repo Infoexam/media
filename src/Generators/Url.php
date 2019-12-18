@@ -2,10 +2,10 @@
 
 namespace Infoexam\Media\Generators;
 
+use DateTimeInterface;
 use Spatie\MediaLibrary\UrlGenerator\BaseUrlGenerator;
-use Spatie\MediaLibrary\UrlGenerator\UrlGenerator;
 
-class Url extends BaseUrlGenerator implements UrlGenerator
+class Url extends BaseUrlGenerator
 {
     /**
      * Get the path for the given media, relative to the root storage path.
@@ -24,7 +24,34 @@ class Url extends BaseUrlGenerator implements UrlGenerator
      */
     public function getUrl(): string
     {
-        return sprintf('%s/%s', $this->prefix(), $this->getPathRelativeToRoot());
+        return sprintf(
+            '%s/%s',
+            $this->prefix(),
+            $this->getPathRelativeToRoot()
+        );
+    }
+
+    /**
+     * Get the temporary url for a media item.
+     *
+     * @param DateTimeInterface $expiration
+     * @param array $options
+     *
+     * @return string
+     */
+    public function getTemporaryUrl(DateTimeInterface $expiration, array $options = []): string
+    {
+        return $this->getUrl();
+    }
+
+    /**
+     * Get the url to the directory containing responsive images.
+     *
+     * @return string
+     */
+    public function getResponsiveImagesDirectoryUrl(): string
+    {
+        return $this->getUrl();
     }
 
     /**
@@ -32,11 +59,9 @@ class Url extends BaseUrlGenerator implements UrlGenerator
      *
      * @return string
      */
-    protected function prefix()
+    protected function prefix(): string
     {
-        $url = config('laravel-medialibrary.media_url');
-
-        return $url ?: $this->local();
+        return config('medialibrary.media_url') ?: $this->local();
     }
 
     /**
@@ -44,9 +69,9 @@ class Url extends BaseUrlGenerator implements UrlGenerator
      *
      * @return string
      */
-    protected function local()
+    protected function local(): string
     {
-        $filesystem = config('laravel-medialibrary.defaultFilesystem');
+        $filesystem = config('medialibrary.disk_name');
 
         $root = config("filesystems.disks.{$filesystem}.root");
 
