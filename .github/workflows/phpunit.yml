@@ -4,22 +4,23 @@ on: [push, pull_request]
 
 jobs:
   phpunit:
-    runs-on: ubuntu-18.04
+    runs-on: ${{ matrix.operating-system }}
 
     strategy:
       fail-fast: false
 
       matrix:
+        operating-system: [ubuntu-latest, windows-latest, macOS-latest]
         php-versions: ['7.4']
 
     steps:
       - uses: actions/checkout@v1
 
       - name: Setup PHP, Composer and Extensions
-        uses: shivammathur/setup-php@master
+        uses: shivammathur/setup-php@v1
         with:
           php-version: ${{ matrix.php-versions }}
-          extension-csv: dom, gd, mbstring, xdebug
+          extensions: dom, gd, mbstring, sqlite3
 
       - name: Install dependencies
         run: composer update --optimize-autoloader --prefer-dist --no-interaction --no-progress --no-suggest
