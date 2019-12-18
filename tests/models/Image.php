@@ -2,9 +2,9 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Infoexam\Media\Media;
-use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
 
-class Image extends Model implements HasMediaConversions
+class Image extends Model implements HasMedia
 {
     use Media;
 
