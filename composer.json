@@ -1,31 +1,27 @@
 {
   "name": "infoexam/media",
-  "description": "Infoexam media.",
+  "description": "CCU Infoexam media package.",
+  "version": "1.0.0",
   "type": "library",
-  "homepage": "https://github.com/Infoexam/media",
+  "homepage": "https://github.com/infoexam/media",
   "license": "MIT",
   "authors": [
     {
-      "name": "BePsvPT",
-      "email": "freedom@csie.io"
+      "name": "bepsvpt",
+      "email": "og7lsrszah6y3lz@infinitefa.email"
     }
   ],
   "require": {
-    "php": "^7.0",
+    "php": "^7.4",
     "ext-gd": "*",
-    "hashids/hashids": "^2.0",
-    "illuminate/support": "5.3.*",
-    "spatie/laravel-medialibrary": "^4.13",
-    "symfony/http-foundation": "3.1.*"
+    "hashids/hashids": "^4.0",
+    "illuminate/http": "^6.8",
+    "illuminate/support": "^6.8",
+    "spatie/laravel-medialibrary": "^7.17"
   },
   "require-dev": {
-    "codeclimate/php-test-reporter": "^0.3",
-    "illuminate/filesystem": "5.3.*",
-    "orchestra/testbench": "3.3.*",
-    "phpunit/phpunit": "^5.7"
-  },
-  "suggest": {
-    "ext-gmp": "Allows arbitrary-length integers to be worked"
+    "orchestra/testbench": "^4.4",
+    "phpunit/phpunit": "^8.5"
   },
   "autoload": {
     "psr-4": {
@@ -38,8 +34,8 @@
     ]
   },
   "config": {
+    "notify-on-install": false,
     "optimize-autoloader": true,
-    "sort-packages": true,
-    "notify-on-install": false
+    "sort-packages": true
   }
 }
